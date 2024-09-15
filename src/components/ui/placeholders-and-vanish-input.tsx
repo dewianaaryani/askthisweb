@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export function PlaceholdersAndVanishInput({
   placeholders,
@@ -11,7 +12,7 @@ export function PlaceholdersAndVanishInput({
 }: {
   placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
@@ -45,6 +46,7 @@ export function PlaceholdersAndVanishInput({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
   const [value, setValue] = useState("");
   const [animating, setAnimating] = useState(false);
 
@@ -173,6 +175,9 @@ export function PlaceholdersAndVanishInput({
     e.preventDefault();
     vanishAndSubmit();
     onSubmit && onSubmit(e);
+    if(value.trim() !== ""){
+      router.push(`/${value}`); 
+    }
   };
   return (
     <form
